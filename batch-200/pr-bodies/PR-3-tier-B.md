@@ -102,10 +102,10 @@ batch-200 古早 200 篇品質整頓 P0 第 3 批 — **Tier B 中度級 24 篇*
 
 Closes part of #851 §5（古早 200 篇品質整頓）
 
-完整 batch-200 任務文件：
-- [`batch-200/README.md`](../tree/main/batch-200/README.md)
-- [`batch-200/audit-results/P0-DETAILED-FINDINGS.md`](../tree/main/batch-200/audit-results/P0-DETAILED-FINDINGS.md)
-- [`batch-200/WORK-ORDERS.md`](../tree/main/batch-200/WORK-ORDERS.md)
+完整 batch-200 evidence trail（在 fork 的 `maintainer-workspace` branch，不 PR 回 upstream）：
+- [`batch-200/README.md`](https://github.com/Zaious/taiwan-md/blob/maintainer-workspace/batch-200/README.md)
+- [`batch-200/audit-results/P0-DETAILED-FINDINGS.md`](https://github.com/Zaious/taiwan-md/blob/maintainer-workspace/batch-200/audit-results/P0-DETAILED-FINDINGS.md)
+- [`batch-200/WORK-ORDERS.md`](https://github.com/Zaious/taiwan-md/blob/maintainer-workspace/batch-200/WORK-ORDERS.md)
 
 ---
 

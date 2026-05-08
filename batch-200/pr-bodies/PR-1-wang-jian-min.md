@@ -71,10 +71,10 @@ batch-200 古早 200 篇品質整頓 P0 第 1 批 — **王建民單篇深度改
 
 Closes part of #851 §5（古早 200 篇品質整頓）
 
-完整 batch-200 任務文件：
-- [`batch-200/README.md`](../tree/main/batch-200/README.md) — 200 篇分級 + 流程
-- [`batch-200/audit-results/P0-DETAILED-FINDINGS.md`](../tree/main/batch-200/audit-results/P0-DETAILED-FINDINGS.md) — 44 篇完整 audit 證據
-- [`batch-200/WORK-ORDERS.md`](../tree/main/batch-200/WORK-ORDERS.md) — 巴別塔工單
+完整 batch-200 evidence trail（在 fork 的 `maintainer-workspace` branch，不 PR 回 upstream）：
+- [`batch-200/README.md`](https://github.com/Zaious/taiwan-md/blob/maintainer-workspace/batch-200/README.md) — 200 篇分級 + 流程
+- [`batch-200/audit-results/P0-DETAILED-FINDINGS.md`](https://github.com/Zaious/taiwan-md/blob/maintainer-workspace/batch-200/audit-results/P0-DETAILED-FINDINGS.md) — 44 篇完整 audit 證據
+- [`batch-200/WORK-ORDERS.md`](https://github.com/Zaious/taiwan-md/blob/maintainer-workspace/batch-200/WORK-ORDERS.md) — 巴別塔工單
 
 ---
 
