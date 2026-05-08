@@ -115,12 +115,38 @@ tags: ['科技與企業', '奇美集團', ...]
 - [x] **release-pr profile hard=0**（warn 因 §11 紀律存在但符合 ≤ 3 上限）
 - [x] **對位句型 88 行跨 41 篇**（< 122 上限，平均 ~2.1 / 篇）
 
+## 🛠️ 5/7-5/8 的反思 + 紀律升級
+
+5/8 處理 #888-#891 整合 ship 你做了這些非預期的工作：
+
+- fetch + rebase `--strategy-option=theirs` 4 個 PR 解 frontmatter conflict
+- merge --no-ff 整合進 PR #892（額外的整合 PR）
+- 寫 4 個 thank-you comment 附 merge commit pointer
+- review 又抓出對位句型 warn 偏高（這個 PR 處理）
+
+謝謝你的判斷「**根因不是 contributor 的問題、不是維護者的問題，是工具不對齊**」（5/8 elegant-ptolemy diary）— 讓 5a1542f66 frontmatter formatter pre-commit hook 的根因修補有了動力。但客觀來看，我們的 maintainer 紀律確實有 gap，整理三層：
+
+| 層 | 失誤 | 為什麼會發生 |
+|---|------|------------|
+| **Sync 紀律** | 4 個 PR 開出去前沒先 `git pull upstream main` | 沒有把「PR 開前 sync upstream」寫進 SOP，憑記憶操作就漏了 |
+| **驗收 SOP gap** | 原本只跑 default profile（`fail_on=hard`）看 hard=0 就 commit；沒跑 release-pr profile（`fail_on=warn`）看 §11 對位句型紀律 | release-pr profile 是 maintainer review 工具，沒寫進 contributor SOP |
+| **修補風格副作用** | Tier A 全做要求「反向解釋編織 ≥ 2 處」，語言學家嚴格執行但沒控制每篇對位句型密度上限 | 工單寫 ≥ 2 下限沒寫 ≤ 3 上限 |
+
+### 下次避免的辦法（已寫進 fork 的 governance 文件）
+
+- **AGENTS §7 PR 開前紀律**：必跑三道 — `fetch upstream` / `rebase main` / 雙 gate 自驗
+- **AGENTS §5 雙 gate**：default profile (commit gate) + release-pr profile (ship gate) 都要過才算交付
+- **AGENTS §4 frontmatter 規格**：對齊 5/8 5a1542f66 規範（flow array tags + CANONICAL_ORDER）
+- **STANCE §11**：5/8 演進記錄入冊（含三層失誤 lessons learned + 對外身份紀律 calibration）
+
+下次 P1 (38 篇) audit 開 PR 前會主動跑那三道 — 不會再撞同樣的 conflict 風暴讓你做手動 rebase。
+
 ## 🔗 相關 Issue
 
 Closes part of #851 §5（古早 200 篇品質整頓）
 
 完整 batch-200 evidence trail（在 fork 的 `maintainer-workspace` branch）：
-- [`batch-200/WORK-ORDERS-polish-prose.md`](https://github.com/Zaious/taiwan-md/blob/maintainer-workspace/batch-200/WORK-ORDERS-polish-prose.md) — 巴別塔工單（含改寫策略 + 分工 + Gate 指令 calibration）
+- [`batch-200/WORK-ORDERS-polish-prose.md`](https://github.com/Zaious/taiwan-md/blob/maintainer-workspace/batch-200/WORK-ORDERS-polish-prose.md) — 巴別塔工單（含改寫策略 + 分工 + 5/9 Gate calibration）
 
 ---
 
