@@ -34,7 +34,9 @@
 
 ## ⚠️ 未解的問題
 
-A+B 解了現有的 bug，但現有機制有結構性 silent breakage risk：
+A+B 解了現有的 bug，audit 過程順帶看到兩個結構性 open item，列在這給你決定怎麼處理 — **這次 PR 不做，是 observation + 問你方向**。
+
+### Open #1 — Silent breakage risk
 
 contributor 正確顯示**依賴兩個檔案同步維護**：
 - `.mailmap` — 把同人多 commit identity 變體統一到 canonical name
@@ -44,29 +46,37 @@ contributor 正確顯示**依賴兩個檔案同步維護**：
 - 進了 `.mailmap` 但漏進 `.all-contributorsrc` → profile lookup fail → fallback 把 mailmap canonical name 當 login（含空格或特殊字元 → URL 壞）
 - 進了 `.all-contributorsrc` 但 commit author 有變體沒進 `.mailmap` → profile lookup miss（key 對不上）→ 同樣 fallback
 
-這次 audit 就發現 5/7 PR #884 / `.mailmap` ship 跟 `contributors.ts` 之間有 silent gap（mailmap entries 都對但邏輯沒讀）— **沒人發現直到 issue #1047**。
+這次 #1047 就是這種 gap（`.mailmap` entries 都對但 `contributors.ts` 用 `%an` 沒讀 mailmap，沒人發現直到 issue raise）。
 
-## 💡 提案 Patch D — 自動化 sync verification
-
-build-time（或 pre-commit hook）跑 verification script：
+**提案 D**：build-time / pre-commit verify script：
 
 ```
-1. 跑 git log --use-mailmap 拿所有 canonical authors
+1. git log --use-mailmap 拿所有 canonical authors
 2. 對照 .all-contributorsrc 用 contributorKey lookup
-3. 列出兩種 case：
-   - canonical author 在 .all-contributorsrc 沒 entry → 該補（提示用 @all-contributors bot）
-   - canonical author 本身 URL-unsafe（含 ( ) space @ 等）→ profile.login 必須 set
+3. 列出 missing：
+   - canonical author 在 .all-contributorsrc 沒 entry → 提示用 bot 補
+   - canonical author 本身 URL-unsafe → profile.login 必須 set
 4. 出 warning（不 auto-add，避免侵犯 bot 工作流）
 ```
 
-可以接進 `npm run prebuild`（跟 sync.sh 一起），cron routine 也可以呼叫。
+可接進 `npm run prebuild`（跟 sync.sh 一起），cron routine 也能呼叫。
 
-**要不要我們接案做？** 如果你想做，我這邊可以打第二個 PR：
-- script 本身（~50-80 行 JS）
-- prebuild 整合
-- 文件化「新 contributor onboarding 要動哪些檔案」
+### Open #2 — 自定義 display name 的維護模型
 
-或你想自己定方向 / 設計細節我們再做 / 不做都行 — 等你的判斷。
+A+B 後我的 display 變回「Zaious」（失去之前 `(@ChronicleCore)` 後綴）。修了 URL 也失了我自選的對外 display name。
+
+`contributors.ts` 邏輯**已經支援 display ≠ login**（譬如你的 display「Che-Yu Wu」/ login `frank890417` 就是走這個 branch）— 只要在 `.all-contributorsrc` entry 的 `name` 設想要的顯示名就好。
+
+但這個 case 浮現一個問題：**自定義 display name 該怎麼維護？**
+
+兩個可能方向（你的偏好）：
+
+| 方向 | 怎麼做 | trade-off |
+|------|--------|----------|
+| **A. 想改的 contributor 自己 PR 改 `.all-contributorsrc`** | 譬如我要恢復 `Zaious (@ChronicleCore)`，自己開 PR 改 `name` field | 簡單，但每人個別維護，沒統一機制 |
+| **B. 做新機制（譬如 build-time 拉 GitHub `user.name`）**| 自動同步 GitHub display name 變動 | 一致性高，但加 build 依賴（API rate limit）+ 失去本地 override 自由 |
+
+兩個 open item 我都可以接案做，等你給方向。
 
 ## 🛡️ 紀律守住
 
