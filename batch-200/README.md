@@ -259,9 +259,17 @@ Phase 5: Polish follow-up（如需）
 | Sub-agent WebSearch | ✅ 5/8 22:42 已修復（5/6-5/8 期間斷裂）|
 | article-health 13 plugin | ✅ 含 spore-writing plugin（only apply spore 路徑，不影響 article 工作）|
 
-### 跟哲宇 routine 的協調
+### 跟哲宇 routine 的協調（5/12 完整核對）
 
-哲宇有自己的 trend-driven priority queue（5/8-5/12 自己 rewrite 盧秀燕 / 季麟連 / 徐巧芯 / 沈文程 等 = 不在我們 batch-200 清單）。**我們做古早 batch 不跟他撞**，他做新聞時事人物。
+| 維度 | 結論 |
+|------|------|
+| **200 篇 inventory 內被個別 rewrite / heal** | **0 篇**（5/6-5/12 期間）|
+| **哲宇 trend-driven rewrite** | 盧秀燕 / 季麟連 / 徐巧芯 / 沈文程 / 聶永真 / 國立臺灣歷史博物館 等 = **不在我們 200 篇清單** |
+| **bulk frontmatter normalization** | 影響全 200 篇 frontmatter 格式（無內容變動）|
+| **加 cross-link 副作用** | 2 篇（荷西明鄭時期 + 蔡英文）— 只加 1 行延伸閱讀 link |
+| **我們的 P0 PR ship** | 44 篇 P0（PR #888-#891 + #892 整合 + #910 polish）|
+
+**結論**：哲宇有自己的 trend-driven priority queue（新聞時事人物 NEW 文章），跟我們古早 batch 完全不重疊。**P1+P2+P3 共 152 篇仍是純未開動的工作範圍**。
 
 ---
 
