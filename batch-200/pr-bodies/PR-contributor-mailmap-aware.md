@@ -2,7 +2,20 @@
 
 修 issue #1047 — 文章貢獻者顯示有壞 URL + 同人重複的 long-standing bug。
 
-**最小變更修整體 bug**：1 行 patch (`%an` → `%aN`) + `.mailmap` 補 alias。哲宇之前已 ship `.mailmap` 機制（在 `Che-Yu Wu` entries 那段），但 `contributors.ts` 用 `%an`（raw）而不是 `%aN`（mailmap-aware）— 一字之差讓 mailmap 完全沒生效。
+完整回溯後發現有 3 個 author name 含特殊字元 (URL-unsafe)：
+- `Zaious (@ChronicleCore)`（我的 GitHub display name）
+- `Wu Che Yu`（你的 author name 變體，已有 `.mailmap` 但沒生效）
+- `Chao-Chun (Joe) Hsu`（其他 contributor）
+
+需要三層 patch 才能完整修：
+
+| Patch | 修什麼 | 對應 case |
+|-------|--------|---------|
+| **A** | `%an` → `%aN`（git log 走 .mailmap） | Wu Che Yu（觸發既有 .mailmap entry）|
+| **B** | `.mailmap` 補 Zaious alias | Zaious (@ChronicleCore) |
+| **C** | `resolveContributor()` 加 email-derive fallback | Chao-Chun (Joe) Hsu + 未來新 case |
+
+哲宇之前已 ship `.mailmap` 機制（在 `Che-Yu Wu` entries 那段），但 `contributors.ts` 用 `%an`（raw）而不是 `%aN`（mailmap-aware）— 一字之差讓 mailmap 完全沒生效。
 
 > Closes #1047
 
@@ -49,31 +62,70 @@
 + Zaious <zaious.design@gmail.com> Zaious (@ChronicleCore) <zaious.design@gmail.com>
 ```
 
+### Patch C — `src/utils/contributors.ts` `resolveContributor()` 加 sanitize fallback
+
+當 authorName 含 URL-unsafe 字元時，從 email local-part derive login（many maintainers use `email prefix == GitHub login`）。
+
+```typescript
+// New helpers
+const GITHUB_LOGIN_REGEX = /^[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,37}[a-zA-Z0-9])?$/;
+function isUrlSafeLogin(s: string): boolean { return GITHUB_LOGIN_REGEX.test(s); }
+function deriveLoginFromEmail(email: string): string | null { ... }
+
+// Updated fallback chain
+const fallbackLogin = isUrlSafeLogin(authorName)
+  ? authorName
+  : deriveLoginFromEmail(authorEmail) || authorName;
+const login = githubLogin || profile?.login || fallbackLogin;
+```
+
+設計考量：
+- ✅ 不擅自改 `.mailmap` 別人的 canonical name（每個人選擇自己的 display name）
+- ✅ 不擅自改 `.all-contributorsrc`（all-contributors bot 維護領域）
+- ✅ 未來新 contributor 設特殊字元 user.name 也自動救到，不需手動 patch
+
 ## 📊 Audit — 全站受影響範圍
 
-跑 `git log --pretty='%H|%an'` 統計後：
+跑 `git log --pretty='%H|%an'` 完整回溯：
 
-| 受害 author name | knowledge/*.md 觸及篇數 |
-|------------------|------------------------|
-| `Zaious (@ChronicleCore)` | **48** |
-| `Chao-Chun (Joe) Hsu` (potential) | 0（不觸及 knowledge/）|
+| 受害 author name | Email | 修法 |
+|------------------|-------|------|
+| `Zaious (@ChronicleCore)` | zaious.design@gmail.com | Patch B（.mailmap）|
+| `Wu Che Yu` | frank890417@gmail.com | Patch A（觸發既有 .mailmap）|
+| `Chao-Chun (Joe) Hsu` | joe32140@gmail.com | Patch C（email-derive → `joe32140`）|
 
-48 篇含：batch-200 P0 修補 + #852 道德課 + #708 教會公報 + #702 活俠傳 + #599 VR/麻將/X-Legend + #625 citations retroactive audit 21 篇 + #910 polish PR 31 篇（去重 48）。
+含特殊字元觸及 `knowledge/*.md` 篇數 ≥ 48（Zaious 變體）+ 散見 site infrastructure commits（Wu Che Yu / Chao-Chun）。
 
 **本 patch 不動文章本身**，僅修 site infrastructure 層 — 重 build 後 contributor 顯示自動修正。
 
 ## ✅ Verification
 
+### 1. `.mailmap` 生效（Patch A+B）
+
 ```bash
 # 修補前（用 %an raw）
-$ git log --all --pretty='%an' | grep -iE 'zaious' | sort -u
+$ git log --all --pretty='%an' | grep -i zaious | sort -u
 Zaious
 Zaious (@ChronicleCore)              ← 兩個變體
 
 # 修補後（用 %aN mailmap-aware）
-$ git log --all --pretty='%aN' | grep -iE 'zaious' | sort -u
+$ git log --all --pretty='%aN' | grep -i zaious | sort -u
 Zaious                                ← 統一 ✅
 ```
+
+### 2. `resolveContributor()` 5 個 case 驗證（Patch C）
+
+跑 `node test-resolve.mjs`（test 檔 PR 後刪除）：
+
+| Author | Email | 預期 login | 實際 | Pass |
+|--------|-------|----------|------|------|
+| Zaious | zaious.design@gmail.com | `Zaious` | `Zaious` | ✅ |
+| Chao-Chun (Joe) Hsu | joe32140@gmail.com | `joe32140` | `joe32140` | ✅ |
+| houston[bot] | astrobot-houston@users.noreply.github.com | `astrobot-houston` | `astrobot-houston` | ✅ |
+| Che-Yu Wu | cheyu.wu@monoame.com | `frank890417` | `frank890417` | ✅ |
+| Wu Che Yu | frank890417@gmail.com | `frank890417` | `frank890417` | ✅ |
+
+**5/5 passed**。
 
 ## 🛡️ 為什麼這 patch 不會踩到「變成文章修改者」迴圈
 
@@ -85,17 +137,6 @@ Issue #1047 §4 紀律明寫：
 - ✅ 只動 `src/utils/contributors.ts` + `.mailmap`
 - ✅ 沒動任何 `knowledge/*.md`
 - ✅ 重 build 後 48 篇文章 contributor 顯示**自動**修正
-
-## 🤔 沒做的（留給後續討論）
-
-**Patch C（深度防衛）**：`resolveContributor()` fallback 加 sanitize 邏輯 — 當 authorName 含 `(`、`@`、空格等 URL 不安全字元時不當 login。
-
-Patch A+B 已 fix 我這邊（Zaious）的 case。Patch C 是預防未來其他 contributor 也設了特殊字元 user.name 撞同問題。沒做是因為：
-
-- 目前只觀察到 1 個其他 raw author 含特殊字元（`Chao-Chun (Joe) Hsu`），但他的 commits 不觸及 `knowledge/`，site 沒實際顯示問題
-- 防衛性邏輯設計需要更謹慎（哪些字元算 unsafe / 怎麼 fallback / 是否需要 warning），這應該另開 issue 討論
-
-如果你想一起做 Patch C 也行，告訴我方向。
 
 ## 🔗 相關 Issue
 
