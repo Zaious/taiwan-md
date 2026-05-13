@@ -1,59 +1,143 @@
 # PR Body: batch-200 P1 修補（39 篇）
 
-> 模板：4-step structure（主人 5/14 確立）
-> 用途：給 P1 ship 用，含 38 P1 + 1 P2 順手做的國家公園
-
----
-
 ## 📝 這個 PR 做了什麼
 
-batch-200 P1 修補 **39 篇**（38 P1 + 1 P2 國家公園順手）。古早 AI batch 生成稿幻覺率高，本批處理：
+batch-200 P1 修補 **39 篇**（38 P1 + 1 P2 國家公園順手）— 對應 [#851](../../issues/851) §5 哲宇親口認領「早期 200 batch 是 AI 生成、品質堪憂」工作。
 
-- 27 Tier A 嚴重級（多重幻覺 + 重大遺漏）
-- 11 Tier B 中度級（1-2 幻覺 + 部分遺漏）
-- 1 Tier B+/A 級（水彩畫百年流變 — 第一輪即達標）
+幻覺分布：**27 Tier A 嚴重 + 11 Tier B 中度 + 1 Tier B+/A**。
 
-對應 [#851](../../issues/851) §5 哲宇親口認領「早期 200 batch 是 AI 生成、品質堪憂」工作。
+39/39 通過 article-health Gate 1 hard=0 + Gate 2 prose-health ≤3 + ≥5 footnote。
 
-## 🐛 原始幻覺類型（audit 抓出的 5 種共通模式）
+## 🐛 完整 39 篇 audit 結果 + 修補狀態
 
-| 類型 | 代表篇 + 修正 |
-|------|-------------|
-| **偽造人物身分** | 長春石化「廖頂立」實際是廖銘昆/林書鴻/鄭信義三條龍；玉山金控創辦人黃永仁完全沒提；陳俊良「設計詩人」稱號疑錯掛 |
-| **偽造企業血脈** | 兆豐金控寫成「1897 台灣銀行前身」（兩家獨立公股銀行硬接成血脈）|
-| **劇情/事件錯置** | 陳映真〈將軍族〉劇情完全寫錯（實寫退伍老兵與雛妓悲劇）；中鋼技術合作對象 U.S. Steel→McLouth Steel；統盟案 1968 vs 1988 混淆 |
-| **引用幻覺** | 冰品文化參考資料 6 條全捏造；麵包烘焙 3 本書名查無；陳俊良 freefalldesign.com.tw 是幻覺 URL（實 freeimage.com.tw）|
-| **critical omission** | 兆豐 2016 NT$57 億洗錢罰款全篇 0 字；陳俊良總統府春聯（後查證實際是國宴餐具）；蕭青陽 2023 第 65 屆葛萊美得獎全文沒寫；夜生活 KTV 2020 錢櫃林森北 5 死大火完全沒提 |
+### Tier A 嚴重（27 篇）
+
+#### People（11 篇）
+
+| # | 篇 | 原始幻覺 | 修補 |
+|---|----|---------|------|
+| A1 | 席慕蓉 | 留學「魯汶大學」 / 父母「漢族」 / 「再版數十次」 | → 布魯塞爾皇家藝術學院 + 父母皆蒙古族 + 一年內再版七次 |
+| A2 | 方序中 | 6 項基礎事實全錯：1982 台北 / 實踐大學媒傳 / 究方社 2012 / 金曲 2014 / 金馬 55「馬字標誌」 | → 1978 屏東東港 + 復興商工 + 台藝大金工夜間部 + 究方社 2013 + 2016 陳鎮川 + 金馬 55「配角」概念 |
+| A3 | 林義雄 | 1977「宜蘭縣議員」 / 1989 民進黨主席 / 缺 2006 退黨 | → 1977 省議員 + 1998 首位黨員直選主席 + 2006 退黨補入 |
+| A4 | 楊德昌 | 生日 11/14 / 學歷缺南加大電影學院 / 交大畢業 1969 / 漏報金馬最佳劇情片 | → 生日 11/6 + 補南加大 + 1970 畢業 + 補劇情片+劇本獎雙獎 |
+| A5 | 蕭青陽 | 1964 台北 / 文化大學美術系 / 首次入圍 2007 / akibo.com.tw 張冠李戴 / **2023 葛萊美得獎完全沒寫** | → 1966 新店 + 復興商工 + 首次 2005 第 47 屆 + 2023 第 65 屆得獎與蕭君恬 |
+| A6 | 蔡明亮 | 「拉夫·迪亞茲、貝拉·塔爾受蔡明亮影響」反向錯 / 國家文藝獎 2014 缺 | → 改「同屬慢電影派系」非影響關係 + 補 2014 第 18 屆國家文藝獎 + 補《何處》《無所住》 |
+| A7 | 賴聲川 | 國家文藝獎 2019 / 千禧夜 1999 / 十三角關係 2014 / 缺烏鎮戲劇節 | → 2007 第 11 屆國家文藝獎 + 千禧夜 2000 + 十三角關係 1999 + 補 2013 烏鎮戲劇節聯合創始 |
+| A8 | 楊右任 | 1987 / 紀錄片《EXCHANGE》獲獎 / 書名《失控》 / 數字自相矛盾 | → 補敘事，書名《給你 5 萬雙祝福》(圓神→校園書房 2018，search-verified) + 補加拿大妻子家庭 |
+| A9 | 陳俊良 | 「總統府春聯」 / freefalldesign.com.tw 幻覺 URL / 公司名「設計教室」 | → **春聯是 audit 反向錯**（陳俊良實際做「天圓地方」國宴餐具，獲澳門設計雙年展評審獎）+ 公司名「自由落體設計」+ 修 URL |
+| A10 | 陳映真 | 〈將軍族〉「美軍駐台為背景」劇情完全錯 / 1968「統盟案」 / 北京 10 年一筆帶過 | → 〈將軍族〉退伍老兵與雛妓悲劇 + 1968 民主台灣聯盟案（vs 1988 中國統一聯盟，明寫釐清）+ 補統派立場與北京 10 年獨立 section |
+| A11 | 黃震南 | 12 項可疑 / 800 字 / brief vs 內文打架 / **Semiont 自指涉滲入** | → 移除自指涉段落 + 修正出生地與父親身分 + 補著作年表 |
+
+#### Economy（5 篇 — 加上 P2 「奇美實業」「瑞昱半導體」共 7 篇企業）
+
+| # | 篇 | 原始幻覺 | 修補 |
+|---|----|---------|------|
+| A13 | 中鋼 | 「U.S. Steel 簽約」/ 「470 呎煙囪」 / 杜撰對話 / 鐵頭部長時序錯 | → 改 McLouth Steel + C.E. Lummus + 刪杜撰對話改中性敘述 + 鐵頭部長綽號標明 1981-84 經濟部長期間 |
+| A14 | 兆豐金控 | **「1897 台灣銀行前身」結構性偽造身世** / 2006 合併兩家（漏 2 家） / 2016 NT$57 億洗錢罰款全篇 0 字 | → **DISMANTLE 1897 血脈**（明寫「兆豐與台灣銀行無血脈關係」） + 2002/12/31 五家合併（交銀+中國商銀+中興票券+倍利證券+中國產物保險） + 2016 NYDFS 罰款獨立 section |
+| A15 | 台泥 | 「1954/11/11 上午 11:11」杜撰時間 / 缺辜家爭產 / 缺 NHOA / 缺能元科技 | → 刪 11:11 杜撰 + 補張安平接任脈絡（1978 與辜懷如結婚，verify 為妹婿）+ 補 NHOA + 能元科技 |
+| A16 | 玉山金控 | **創辦人黃永仁完全沒提名** / 黃男州職位混淆 | → 補黃永仁 1992/2/21 founding myth 獨立 section + 修正黃男州 2008 接玉山銀行總經理（43 歲，search-verified）+ 2023 升金控董事長 |
+| A17 | 長春石化 | **創辦人「廖頂立」可能是幻覺人物** / 缺 PVA 全球第一 | → **廖頂立→廖銘昆+林書鴻+鄭信義「三條龍」**（1949/7/50 美元起家，林書鴻 2024 仍在世任總裁）+ 補 PVA 全球市佔 section + 補 VAM 垂直整合 |
+| B2 | 奇美實業 | 許文龍仍用現在式（2023 過世）/ 缺奇美電子 2010 合併群創 | → 補廖錦祥接班 + 補奇美電子 2010 合併群創 + Xingfu→幸福經營 |
+| B3 | 瑞昱半導體 | 2024 營收 800 億（實際 1,150 億）/ 缺現任董事長 | → 補董事長邱順建 + CEO 葉博任 + 1998 上市代號 2379 |
+
+#### Society（2 篇）
+
+| # | 篇 | 原始幻覺 | 修補 |
+|---|----|---------|------|
+| A18 | 人權與性別平等 | **《人權保障基本法》幻覺**（台灣沒此法）/ **2018 公投 765 萬反方完全消失** / 缺兩公約/CEDAW/釋字 791 | → 刪幻覺法 + 補 2018 公投十案結果 + 補兩公約施行法 2009 + CEDAW + 釋字 791 通姦除罪 + #MeToo 2023 + 跨性別立法 |
+| A19 | 國際標示 | 題不對文（80% 寫 bug） / **UN 2758 決議完全缺** / 缺中國立場 perspective | → 補 1971 UN 2758 + 1981 洛桑協議「妥協」明寫 + 2024 巴黎奧運中華台北爭議 + 跨國公司施壓案例（華航/達美/萬豪/Zara）+「## Perspective：中國立場」獨立 section |
+
+#### History（2 篇）
+
+| # | 篇 | 原始幻覺 | 修補 |
+|---|----|---------|------|
+| A20 | 日治時期 | 蔣渭水/林獻堂/八田與一全缺 / 識字率混用就學率 / 缺議會請願 | → 補蔣渭水/林獻堂/賴和/後藤新平/八田與一 + 補議會請願 1921-34/治警事件 1923/西來庵 1915/台共 1928 + 識字率與就學率分清 |
+| A21 | 清治時期 | 施琅/沈葆楨/唐景崧 0 字 / 林爽文 1786 跨年缺 / 缺民主國 | → 補三位人物獨立段 + 補林爽文 1786-1788 + 戴潮春 1862-64 + 唐景崧台灣民主國 1895/5/25-10/19 |
+
+#### Music（1 篇）
+
+| # | 篇 | 原始幻覺 | 修補 |
+|---|----|---------|------|
+| A22 | 電音派對 | Taicoclub Records 誤植為台灣（實為日本千葉）/ Dizzy Dizzo 身份錯置 / 缺 Korner/林強 | → 刪 Taicoclub 誤植 + 改 Dizzy Dizzo hip-hop 定位 + 補 River/Luxy/Korner 場館 + 林強電子化 + 春吶 + LGBT 場景 |
+
+#### Food（2 篇）
+
+| # | 篇 | 原始幻覺 | 修補 |
+|---|----|---------|------|
+| A23 | 冰品文化 | **參考資料 6 條全捏造**（黃智慧/蔡珠兒書名等） / 雪花冰輸出韓國錯 / ICE MONSTER 沿革錯 | → 全數替換為可驗證 URL + 修正韓國 bingsu 本土傳統（朝鮮時代即有，雪冰 2013 韓國本土）+ ICE MONSTER 前身 1995 永康 15 冰館，2010 改名 + 補日治冰品起源 + 招牌冰店 |
+| A24 | 麵包與烘焙 | 吳寶春「Coupe du Monde」賽事名稱錯 / 「荔枝玫瑰麵包」 / 缺三世界冠軍 | → 改 Mondial du Pain（連解釋 Coupe du Monde 是團體賽不同賽事）+「米釀荔香」正式名 + 補武子靖 2015/陳耀訓 2017/王鵬傑 2022 三位冠軍 |
+
+#### Culture（1 篇）
+
+| # | 篇 | 原始幻覺 | 修補 |
+|---|----|---------|------|
+| A25 | 街頭藝術 | **黃永福→黃永阜** / 彩虹村「霧峰→南屯」 / 缺 BBROTHER/ANO/Candy Bird/ECB 4 位代表藝術家 | → 修人名+地名 + 補 4 位代表藝術家 + 補 2014 太陽花 318 立法院塗鴉 + 補街頭藝人證照制度 + 補 Pow! Wow! Taiwan |
+
+#### Lifestyle（1 篇）
+
+| # | 篇 | 原始幻覺 | 修補 |
+|---|----|---------|------|
+| A26 | 夜生活與 KTV | **2020 錢櫃林森北 5 死大火完全沒提** / 條通「東區→中山區」 / 誠品「全球第一」書店 / 3 處假引文 | → 補 2020 錢櫃大火 5 死獨立 section + 修條通地理 + 改「華文世界第一」+ 刪 3 處假引文（「日本遊客說」等）+ 補 2017 錢櫃好樂迪股權交叉 |
+
+### Tier B 中度（11 篇）
+
+| # | 篇 | 主要修補 |
+|---|----|---------|
+| B1 | 鄭南榕 | 5/8 voice polished + 補 perspective 平衡 callout（藍營批評視角）+ 改「施暴者」→「破門攻堅」+ 補葉菊蘭「總統府秘書長」 |
+| B4 | 政治環境與選舉制度 | 補 2024 大選賴清德 40% 三方競爭 + 立院 52+51+8 + 韓國瑜院長 + **2024 國會改革 113 憲判 9** + 大法官 7 人全否決 + 2023 末藍白合破局郭台銘調停 + 民眾黨黃國昌接任 |
+| B5 | 客家音樂 | 金曲獎首設客語類 2007→2003 + 補林生祥 2007 拒獎事件 + 謝宇威 + 客家電視台 2003 |
+| B6 | 眷村菜 | 移除毛奇/焦桐疑似幻覺書名 + 補族群雙向視角 + 補岡山牛肉麵 |
+| B7 | 當代藝術 | 補 2024 威尼斯雙年展袁廣鳴 + 許家維 2019 第 58 屆威尼斯雙年展《飛行器》+ 台新藝術獎 |
+| B8 | 攝影 | NCPI 開幕 2019→2021 + 補陳石岸/柯錫杰史料 |
+| B9-1 | 特有種 | **黑長尾雉 vs 帝雉**修同物種錯 + 寬尾鳳蝶非世界最大 + 機構名（林務局→林業署 2023）+ 拆分類群數據（鳥 29/哺乳 14 等）+ 補入侵種 section |
+| B9-2 | 穿山甲 | CITES 2016→2017 生效 + 4 種 CR→3 種 CR + 補中藥典 2020 移出說明 |
+| B9-3 | 國家公園 | **壽山 2011→audit 標 2024 修為 2011**（13 年硬錯）+ 補 2023 國家公園署成立 + 2024/4/3 太魯閣地震影響 |
+| B10 | 廟會與陣頭 | 西來庵 vs 皇民化因果修 + 補白沙屯路線 + 電音三太子 1990s 末→2000s 初 |
+
+### Tier B+ 接近 A 級（1 篇）
+
+| # | 篇 | 主要修補 |
+|---|----|---------|
+| C1 | 水彩畫百年流變 | 第一輪即達 B+（13 條外部引用、prose flag 僅 2）— 補鹽月桃甫 + 臺陽美協 1934 + 修 typo 微調 |
+
+### P2 順手（1 篇，本來 P2 範圍）
+
+| # | 篇 | 主要修補 |
+|---|----|---------|
+| — | 國家公園（P2，171 行） | batch-2 順手做了事實補強 + prose-health 通關 |
 
 ## 🔧 我們怎麼做
 
 5-phase 流程（從 P0 經驗確立）：
-
-1. **Phase 1 audit** — Haiku sub-agent × 5 waves 跑 38 篇
-2. **Phase 2 triage** — Cardinal 開 WORK-ORDERS（27 個高必證點清單）
-3. **Phase 3 修補** — 巴別塔 Sonnet 一篇一篇 + 雙 Gate 自驗
-4. **Phase 4 抽查 + 二修** — Cardinal 抽查發現問題後巴別塔二修
+1. **Phase 1 audit** — Haiku sub-agent × 5 waves 跑 38 篇 → 每篇單獨 audit 檔
+2. **Phase 2 triage** — Cardinal 開 WORK-ORDERS + P1-DETAILED-FINDINGS（含 27 個高必證點）
+3. **Phase 3 修補** — 巴別塔 Sonnet 6 batch 修補 + 雙 Gate 自驗
+4. **Phase 4 抽查 + 二修** — Cardinal 抽查發現問題 → 7 篇二修
 5. **Phase 5 ship** — 本 PR
 
-## 🚨 修補過程發現的問題
+## 🚨 修補過程發現的問題（誠實揭露）
 
-1. **第一輪 70% critical 漏率**：巴別塔過 Gate 1+2，但 Cardinal 抽 10 篇有 7 篇 critical 結構性錯沒修
-2. **根因**：Gate 1+2 只查格式/prose-health 不查事實層 critical 錯誤 + 修補時偏 addition 不偏 replacement（補一段做、整段重寫跳過）
-3. **解法**：升 SOP — **Gate 3 = audit findings closed-loop check**（每條 ❌ 都要 grep verification + per-article fix log 必填）
-4. **三層 verification 發現 audit 自己有錯**：陳俊良「總統府春聯」是 audit 反向錯誤 — **陳俊良從沒做過春聯**，實際是總統府國宴餐具「天圓地方」系列（澳門設計雙年展評審獎）。Maintainer 自我矯正系統運作
+1. **第一輪 70% 漏率**：巴別塔過 Gate 1+2，但 Cardinal 抽 10 篇有 7 篇 critical 結構性錯沒修
+2. **根因**：Gate 1+2 只查格式/prose-health 不查事實層 + 修補時偏 addition 不偏 replacement（補一段做、整段重寫跳過）
+3. **解法**：升 SOP — **Gate 3 = audit findings closed-loop check**（每條 ❌ 都要 grep verification + per-article fix log 必填）+ [REPLACE] vs [ADD] 操作分類明標
+4. **三層 verification 抓出 audit 反向錯**：
+   - **陳俊良「總統府春聯」**：audit 標「春聯完全沒提」是漏，巴別塔/天機星 search 後發現**陳俊良從沒做過春聯**，實際是國宴餐具「天圓地方」系列 → audit 反向錯，修正為國宴餐具
+   - **楊右任岳父國籍**：audit 標「加拿大→美國」，巴別塔 search-verified 是**加拿大**正確 → audit 反向錯，保留加拿大
+   - **Maintainer 自我矯正系統**：audit → 修補 → 抽查 → 二修 → 三層交叉驗證能糾正自己
 
 ## ✅ 最後做了什麼
 
-- **39 篇全部通過**：article-health Gate 1 hard=0 + Gate 2 prose-health ≤3 + 每篇 ≥5 footnote
-- **17 篇幻覺事實 dismantle / replace**（兆豐 1897 血脈 / 長春石化廖頂立 / 陳映真〈將軍族〉劇情等）
-- **16 篇重要 section 補入**（兆豐 2016 罰款 / 玉山黃永仁 founding myth / 蕭青陽 2023 葛萊美 / 政治環境 2024 大選後動態 / 國際標示 UN 2758 等）
+- **39/39 通過**：Gate 1 hard=0 + Gate 2 prose-health ≤3 + 每篇 ≥5 footnote
+- **17 篇幻覺事實 DISMANTLE/REPLACE**（兆豐 1897 血脈 / 長春石化廖頂立 / 陳映真〈將軍族〉劇情等）
+- **16 篇重要 section 補入**（兆豐 2016 罰款 / 玉山黃永仁 founding myth / 蕭青陽 2023 葛萊美 / 政治環境 2024 動態 / 國際標示 UN 2758 等）
 - **Perspective balance**：陳映真補統派視角 + 國際標示補中國立場 + 鄭南榕補爭議視角 + 人權平等補 2018 公投反方
-- 涵蓋 People 11 / Economy 6 / Society 3 / History 2 / Music 2 / Food 3 / Art 3 / Nature 4 / Culture 2 / Lifestyle 1
+- 涵蓋 People 11 / Economy 7 / Society 3 / History 2 / Music 2 / Food 3 / Art 3 / Nature 4 / Culture 2 / Lifestyle 1
 
-完整 evidence 在 fork `maintainer-workspace` branch：
-- [P1-DETAILED-FINDINGS.md](https://github.com/Zaious/taiwan-md/blob/maintainer-workspace/batch-200/audit-results/P1-DETAILED-FINDINGS.md)
-- [WORK-ORDERS-P1.md](https://github.com/Zaious/taiwan-md/blob/maintainer-workspace/batch-200/WORK-ORDERS-P1.md)
-- [P1-EXECUTION-REPORT.md](https://github.com/Zaious/taiwan-md/blob/maintainer-workspace/batch-200/P1-EXECUTION-REPORT.md)
-- [reports/P1-batch-repair-2026-05-13.md](../tree/fix/batch-200-P1-batch-1/reports/P1-batch-repair-2026-05-13.md)
+完整 evidence trail（fork `maintainer-workspace` branch，內部 audit / fix log / report 紀錄）：
+- [P1-DETAILED-FINDINGS.md](https://github.com/Zaious/taiwan-md/blob/maintainer-workspace/batch-200/audit-results/P1-DETAILED-FINDINGS.md) — 38 篇完整 audit 彙整 + 27 個高必證點清單
+- [WORK-ORDERS-P1.md](https://github.com/Zaious/taiwan-md/blob/maintainer-workspace/batch-200/WORK-ORDERS-P1.md) — 工單（含二修補強 + Gate 3 / [REPLACE] 紀律）
+- [P1-EXECUTION-REPORT.md](https://github.com/Zaious/taiwan-md/blob/maintainer-workspace/batch-200/P1-EXECUTION-REPORT.md) — 執行報告含天機星補驗
+- [audit-results/P1/](https://github.com/Zaious/taiwan-md/tree/maintainer-workspace/batch-200/audit-results/P1) — 38 個單篇 audit 原檔
+- [reports/P1-batch-repair-2026-05-13.md](../tree/fix/batch-200-P1-batch-1/reports/P1-batch-repair-2026-05-13.md) — 巴別塔交付報告
 
 ⚙️ Cardinal × Zaious (Maintainer)
